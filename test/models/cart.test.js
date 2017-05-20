@@ -1,7 +1,7 @@
 const expect = require( 'chai' ).expect;
 const Cart = require( '../../models/cart' );
 
-describe( 'Cart test', () => {
+describe( 'cart model test', () => {
 	beforeEach( () => {
 		this.item = {
 			id: '1',

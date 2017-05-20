@@ -1,8 +1,8 @@
 const expect = require( 'chai' ).expect;
 const Product = require( '../../models/product' );
 
-describe( 'Product schema test', () => {
-	it( 'imageUrl, name, description, price fields are required', done => {
+describe( 'product model test', () => {
+	it( 'schema', done => {
 		let product = new Product();
 
 		product.validate( err => {

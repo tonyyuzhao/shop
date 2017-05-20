@@ -1,0 +1,36 @@
+<div class="row row-eq-height">
+	{{# each products }}
+		<div class="col-sm-6 col-md-4">
+			<div class="thumbnail">
+				<img src="{{ this.imageUrl }}"
+					 class="img-responsive">
+				<div class="caption">
+					<span class="bold">{{ this.name }}</span>
+					<p class="description">{{ this.description }}</p>
+					<div class="clearfix">
+						<div class="bold pull-left">${{ this.price }}</div>
+						<div class="input-group pull-right">
+							<select class="form-control">
+								<option selected>1</option>
+								<option>2</option>
+								<option>3</option>
+								<option>4</option>
+								<option>5</option>
+								<option>6</option>
+								<option>7</option>
+								<option>8</option>
+								<option>9</option>
+								<option>10</option>
+							</select>
+							<button name="add-to-cart" id="{{ this._id }}" class="btn btn-success"
+									role="button"><i class="fa fa-shopping-cart" aria-hidden="true"> Add to Cart</i>
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	{{/each }}
+</div>
+
+<script type="text/javascript" src="javascripts/addtocart.js"></script>

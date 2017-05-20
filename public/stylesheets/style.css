@@ -1,9 +1,10 @@
-.thumbnail img {
-    max-height: 150px;
+.bold {
+    font-weight: bold;
+    font-size: 18px;
 }
 
-.thumbnail h3 {
-    min-height: 50px;
+.thumbnail img {
+    max-height: 150px;
 }
 
 .thumbnail .description {
@@ -11,7 +12,6 @@
     min-height: 100px;
 }
 
-.price {
-    font-weight: bold;
-    font-size: 18px;
+.thumbnail button {
+    width: 100%;
 }

@@ -6,7 +6,7 @@ module.exports.showProducts = function ( req, res ) {
 			return console.log( err );
 		}
 
-		res.render( 'shop/products', {
+		res.render( 'products', {
 			title: 'Shop',
 			products: products
 		} );

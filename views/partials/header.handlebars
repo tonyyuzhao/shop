@@ -8,14 +8,17 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="/">Toronto Best Chicken Sandwich Store</a>
+			<a class="navbar-brand" href="/">Home</a>
 		</div>
 
 		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 			<ul class="nav navbar-nav navbar-right">
 				<li>
-					<a href="#">View Cart <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-						<span class="badge">0</span>
+					<a href="/cart">
+						<button class="btn btn-primary" type="button">
+							<i class="fa fa-shopping-cart" aria-hidden="true"> Cart</i>
+							<span class="badge">{{ session.cart.totalQty }}</span>
+						</button>
 					</a>
 				</li>
 			</ul>

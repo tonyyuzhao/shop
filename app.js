@@ -5,8 +5,11 @@ const logger = require( 'morgan' );
 const bodyParser = require( 'body-parser' );
 const handlebars = require( 'express-handlebars' );
 const mongoose = require( 'mongoose' );
+const session = require( 'express-session' );
+const MongoStore = require( 'connect-mongo' )( session );
 
 const index = require( './routes/index' );
+
 const app = express();
 
 mongoose.connect( 'mongodb://localhost:27017/shop' );
@@ -20,7 +23,19 @@ app.set( 'view engine', 'handlebars' );
 app.use( logger( 'combined' ),
 	bodyParser.json(),
 	bodyParser.urlencoded( { extended: false } ),
-	express.static( path.join( __dirname, 'public' ) )
+	session( {
+		secret: 'keyboard cat',
+		resave: false,
+		saveUninitialized: false,
+		store: new MongoStore( {
+			mongooseConnection: mongoose.connection
+		} )
+	} ),
+	express.static( path.join( __dirname, 'public' ) ),
+	( req, res, next ) => {
+		res.locals.session = req.session;
+		next();
+	}
 );
 
 app.use( '/', index );

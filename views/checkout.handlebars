@@ -1,0 +1,24 @@
+<h1>Order Placed</h1>
+<a href="/"><i class="fa fa-reply" aria-hidden="true"> Continue Shopping</i></a>
+<div class="row">
+	<div class="col-sm-8 col-md-offset-2">
+		<div class="panel panel-default">
+			<div class="panel-body">
+				<span class="bold">Your Order</span>
+				<ul class="list-group">
+					{{# each products}}
+						<li class="list-group-item">
+							{{ this.item.name }} (${{ this.item.price }} x{{ this.qty }})
+							<span class="pull-right">
+								${{ this.price }}
+							</span>
+						</li>
+					{{/each}}
+				</ul>
+			</div>
+			<div class="panel-footer">
+				<strong>Total Price: ${{ totalPrice }}</strong>
+			</div>
+		</div>
+	</div>
+</div>
