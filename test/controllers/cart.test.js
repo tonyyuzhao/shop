@@ -2,6 +2,7 @@ const sinon = require( 'sinon' );
 const controller = require( '../../controllers/cart' );
 const Product = require( '../../models/product' );
 const Cart = require( '../../models/cart' );
+const Order = require( '../../models/order' );
 
 const sandbox = sinon.sandbox.create();
 
@@ -51,6 +52,15 @@ describe( 'cart controller test', () => {
 		} );
 	} );
 
+	it( 'update cart with empty cart', () => {
+		let req = { params: {}, session: {} };
+		let res = { render: sandbox.stub() };
+
+		controller.updateCart( req, res );
+
+		sandbox.assert.calledWith( res.render, 'cart', { products: null } );
+	} );
+
 	it( 'update cart', () => {
 		sandbox.stub( Cart.prototype, 'update' );
 
@@ -63,6 +73,15 @@ describe( 'cart controller test', () => {
 		sandbox.assert.calledWith( res.redirect, '/cart' );
 	} );
 
+	it( 'remove from cart with empty cart', () => {
+		let req = { params: {}, session: {} };
+		let res = { render: sandbox.stub() };
+
+		controller.removeFromCart( req, res );
+
+		sandbox.assert.calledWith( res.render, 'cart', { products: null } );
+	} );
+
 	it( 'remove from cart', () => {
 		sandbox.stub( Cart.prototype, 'remove' );
 
@@ -73,5 +92,27 @@ describe( 'cart controller test', () => {
 
 		sandbox.assert.calledWith( Cart.prototype.remove, req.params.id );
 		sandbox.assert.calledWith( res.redirect, '/cart' );
+	} );
+
+	it( 'checkout with empty cart', () => {
+		let req = { params: {}, session: {} };
+		let res = { render: sandbox.stub() };
+
+		controller.checkout( req, res );
+
+		sandbox.assert.calledWith( res.render, 'cart', { products: null } );
+	} );
+
+	it.skip( 'checkout', () => {
+		sandbox.stub( Cart.prototype, 'add' );
+		sandbox.stub( Order, 'save' ); //mongoose save is dynamically generated so it cannot be stubbed
+
+		let req = { params: {}, session: { cart: cart } };
+		let res = { render: sandbox.stub() };
+
+		Order.save.yields( null );
+		controller.checkout( req, res );
+
+		sandbox.assert.calledWith( res.render, 'checkout', { products: [ product ], totalPrice: cart.totalPrice } );
 	} );
 } );
