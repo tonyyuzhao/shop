@@ -37,23 +37,49 @@ describe( 'cart controller test', () => {
 		sandbox.assert.calledWith( res.render, 'cart', { products: null } );
 	} );
 
-	it( 'show cart', () => {
+	it( 'show cart with errors', () => {
 		sandbox.stub( Cart.prototype, 'toArray' );
 
-		let req = { params: {}, session: { cart: cart } };
-		let res = { render: sinon.stub() };
+		let error = 'error';
+		let req = { params: {}, session: { cart: cart }, flash: sandbox.stub().returns( [ error ] ) };
+		let res = { render: sandbox.stub() };
 
 		Cart.prototype.toArray.returns( [ product ] );
 		controller.showCart( req, res );
 
 		sandbox.assert.calledWith( res.render, 'cart', {
 			products: [ product ],
-			totalPrice: cart.totalPrice
+			totalPrice: cart.totalPrice,
+			errors: [ error ],
+			hasErrors: true
+		} );
+	} );
+
+	it( 'show cart', () => {
+		sandbox.stub( Cart.prototype, 'toArray' );
+
+		let req = { params: {}, session: { cart: cart }, flash: sandbox.stub().returns( [] ) };
+		let res = { render: sandbox.stub() };
+
+		Cart.prototype.toArray.returns( [ product ] );
+		controller.showCart( req, res );
+
+		sandbox.assert.calledWith( res.render, 'cart', {
+			products: [ product ],
+			totalPrice: cart.totalPrice,
+			errors: [],
+			hasErrors: false
 		} );
 	} );
 
 	it( 'update cart with empty cart', () => {
-		let req = { params: {}, session: {} };
+		let req = {
+			params: {},
+			session: {},
+			checkParams: sandbox.stub().returns( { isInt: sandbox.stub() } ),
+			validationErrors: sandbox.stub(),
+			flash: sandbox.stub()
+		};
 		let res = { render: sandbox.stub() };
 
 		controller.updateCart( req, res );
@@ -61,10 +87,35 @@ describe( 'cart controller test', () => {
 		sandbox.assert.calledWith( res.render, 'cart', { products: null } );
 	} );
 
+	it( 'update cart invalid qty', () => {
+		sandbox.stub( Cart.prototype, 'update' );
+
+		let req = {
+			params: { qty: 'invalid' },
+			session: {},
+			checkParams: sandbox.stub().returns( { isInt: sandbox.stub() } ),
+			validationErrors: sandbox.stub().returns( [ 'error' ] ),
+			flash: sandbox.stub()
+		};
+		let res = { redirect: sandbox.stub() };
+
+		controller.updateCart( req, res );
+
+		sandbox.assert.notCalled( Cart.prototype.update );
+		sandbox.assert.calledWith( req.flash, 'error' );
+		sandbox.assert.calledWith( res.redirect, '/cart' );
+	} );
+
 	it( 'update cart', () => {
 		sandbox.stub( Cart.prototype, 'update' );
 
-		let req = { params: { id: 'dummy', qty: 10 }, session: { cart: cart } };
+		let req = {
+			params: { id: 'dummy', qty: 10 },
+			session: { cart: cart },
+			checkParams: sandbox.stub().returns( { isInt: sandbox.stub() } ),
+			validationErrors: sandbox.stub(),
+			flash: sandbox.stub()
+		};
 		let res = { redirect: sandbox.stub() };
 
 		controller.updateCart( req, res );

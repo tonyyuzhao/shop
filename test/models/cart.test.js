@@ -66,7 +66,7 @@ describe( 'cart model test', () => {
 		done();
 	} );
 
-	it( 'update items', done => {
+	it( 'update item', done => {
 		this.existingCart.update( this.item.id, 5 );
 
 		expect( this.existingCart.items ).to.have.keys( this.item.id );
@@ -80,7 +80,7 @@ describe( 'cart model test', () => {
 		done();
 	} );
 
-	it( 'update items will remove item if qty is 0', done => {
+	it( 'update item will remove item if qty is 0', done => {
 		this.existingCart.update( this.item.id, 0 );
 
 		expect( this.existingCart.items ).to.not.have.keys( this.item.id );
@@ -89,12 +89,28 @@ describe( 'cart model test', () => {
 		done();
 	} );
 
-	it( 'remove items', done => {
+	it( 'update item will throw exception for invalid item', done => {
+		expect( () => {
+			let cart = new Cart( {} );
+			cart.update( 'invalid', 0 );
+		} ).to.throw( 'Invalid product' );
+		done();
+	} );
+
+	it( 'remove item', done => {
 		this.existingCart.remove( this.item.id );
 
 		expect( this.existingCart.items ).to.not.have.keys( this.item.id );
 		expect( this.existingCart.totalQty ).to.equal( 0 );
 		expect( this.existingCart.totalPrice ).to.equal( 0 );
+		done();
+	} );
+
+	it( 'remove item will throw exception for invalid item', done => {
+		expect( () => {
+			let cart = new Cart( {} );
+			cart.remove( 'invalid', 0 );
+		} ).to.throw( 'Invalid product' );
 		done();
 	} );
 

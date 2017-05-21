@@ -6,6 +6,8 @@ const bodyParser = require( 'body-parser' );
 const handlebars = require( 'express-handlebars' );
 const mongoose = require( 'mongoose' );
 const session = require( 'express-session' );
+const flash = require( 'connect-flash' );
+const validator = require( 'express-validator' );
 const MongoStore = require( 'connect-mongo' )( session );
 
 const index = require( './routes/index' );
@@ -23,6 +25,7 @@ app.set( 'view engine', 'handlebars' );
 app.use( logger( 'combined' ),
 	bodyParser.json(),
 	bodyParser.urlencoded( { extended: false } ),
+	validator(),
 	session( {
 		secret: 'keyboard cat',
 		resave: false,
@@ -31,6 +34,7 @@ app.use( logger( 'combined' ),
 			mongooseConnection: mongoose.connection
 		} )
 	} ),
+	flash(),
 	express.static( path.join( __dirname, 'public' ) ),
 	( req, res, next ) => {
 		res.locals.session = req.session;
