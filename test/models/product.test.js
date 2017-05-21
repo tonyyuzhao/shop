@@ -13,4 +13,13 @@ describe( 'product model test', () => {
 			done();
 		} )
 	} );
+
+	it( 'price must be non-negative', done => {
+		let product = new Product( { imageUrl: 'dummy', name: 'dummy', description: 'dummy', price: -1 } );
+
+		product.validate( err => {
+			expect( err.errors.price ).to.exist;
+			done();
+		} )
+	} );
 } );
