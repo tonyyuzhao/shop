@@ -33,7 +33,7 @@ Start the app:
 $ npm start
 ```
 
-navigate to http://localhost:3000
+Navigate to http://localhost:3000
 
 ## Tests
 
